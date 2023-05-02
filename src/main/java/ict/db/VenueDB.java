@@ -113,7 +113,7 @@ public class VenueDB {
         
     }
     
-    public boolean editVenue(VenueBean cb){
+    public boolean editVenue(int id, int staffId, String name, String address, String desc, String img, String type, int capacity, double fee, String lastModifiedFee){
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
         ResultSet rs = null;
@@ -125,15 +125,16 @@ public class VenueDB {
             
             String preQueryStatement = "UPDATE venue SET staffId = ?, name = ?, address = ?, desc = ?, img = ?, type = ?, capacity = ?, fee = ?, last_modified_fee = ? WHERE id = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, cb.getStaffId());
-            pStmnt.setString(1, cb.getName());
-            pStmnt.setString(1, cb.getAddress());
-            pStmnt.setString(1, cb.getDesc());
-            pStmnt.setString(1, cb.getImg());
-            pStmnt.setString(1, cb.getType());
-            pStmnt.setInt(2, cb.getCapacity());
-            pStmnt.setDouble(3, cb.getFee());
-            pStmnt.setString(4, cb.getLastModifiedFee());
+            pStmnt.setInt(1, staffId);
+            pStmnt.setString(2, name);
+            pStmnt.setString(3, address);
+            pStmnt.setString(4, desc);
+            pStmnt.setString(5, img);
+            pStmnt.setString(6, type);
+            pStmnt.setInt(7, capacity);
+            pStmnt.setDouble(8, fee);
+            pStmnt.setString(9, lastModifiedFee);
+            pStmnt.setInt(10, id);
 
             rowsAffected = pStmnt.executeUpdate();
             
@@ -145,18 +146,17 @@ public class VenueDB {
         return (rowsAffected > 0);
     }
     
-    public boolean delRecord(String custId){
+    public boolean delVenue(int id){
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
-        ResultSet rs = null;
         int rowsAffected = 0;
 
         try{
             cnnct = getConnection();
             
-            String preQueryStatement = "DELETE FROM CUSTOMER WHERE custId = ?";
+            String preQueryStatement = "DELETE FROM venue WHERE id = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, custId);
+            pStmnt.setInt(1, id);
             
             rowsAffected = pStmnt.executeUpdate();
             

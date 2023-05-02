@@ -82,76 +82,99 @@ public class BookingDB {
         return bookings;
     }
     
-    public boolean addBooking(int id, int memberId, int guestListId, int notificationId, int venueId, int status, String createTime, String checkoutTime, String checkinTime, String startDate, String startHour, String totalHour, double fee){
-        Connection cnnct = null;
-   
-        PreparedStatement pStmnt = null;
-        boolean isSuccess = false;
-        try{
-            cnnct = getConnection();
-            String preQueryStatement = "INSERT INTO booking(member_id, guestlist_id, notification_id, venue_id, status, create_time, fee, checkout_time, checkin_time, start_date, start_hour, total_hour) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, memberId);
-            pStmnt.setInt(2, guestListId);
-            pStmnt.setInt(3, notificationId);
-            pStmnt.setInt(4, venueId);
-            pStmnt.setInt(5, status);
-            pStmnt.setString(6, createTime);
-            pStmnt.setDouble(7, fee);
-            pStmnt.setString(8, checkoutTime);
-            pStmnt.setString(9, checkinTime);
-            pStmnt.setString(10, startDate);
-            pStmnt.setString(11, startHour);
-            pStmnt.setString(12, totalHour);
-            
-           
-            int rowCount = pStmnt.executeUpdate();
-            if(rowCount >= 1){
-                isSuccess = true;
-            }
-            pStmnt.close();
-            cnnct.close();
-        } catch(SQLException ex){
-             while(ex != null){
-                ex.printStackTrace();
-                ex = ex.getNextException();
-            }
-        } catch(IOException ex){ 
-            ex.printStackTrace(); 
-        }
-        
-        return isSuccess;
-    }
+//    public boolean addBooking(int id, int memberId, int guestListId, int notificationId, int venueId, int status, String createTime, String checkoutTime, String checkinTime, String startDate, String startHour, String totalHour, double fee){
+//        Connection cnnct = null;
+//   
+//        PreparedStatement pStmnt = null;
+//        boolean isSuccess = false;
+//        try{
+//            cnnct = getConnection();
+//            String preQueryStatement = "INSERT INTO booking(member_id, guestlist_id, notification_id, venue_id, status, create_time, fee, checkout_time, checkin_time, start_date, start_hour, total_hour) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//            pStmnt = cnnct.prepareStatement(preQueryStatement);
+//            pStmnt.setInt(1, memberId);
+//            pStmnt.setInt(2, guestListId);
+//            pStmnt.setInt(3, notificationId);
+//            pStmnt.setInt(4, venueId);
+//            pStmnt.setInt(5, status);
+//            pStmnt.setString(6, createTime);
+//            pStmnt.setDouble(7, fee);
+//            pStmnt.setString(8, checkoutTime);
+//            pStmnt.setString(9, checkinTime);
+//            pStmnt.setString(10, startDate);
+//            pStmnt.setString(11, startHour);
+//            pStmnt.setString(12, totalHour);
+//            
+//           
+//            int rowCount = pStmnt.executeUpdate();
+//            if(rowCount >= 1){
+//                isSuccess = true;
+//            }
+//            pStmnt.close();
+//            cnnct.close();
+//        } catch(SQLException ex){
+//             while(ex != null){
+//                ex.printStackTrace();
+//                ex = ex.getNextException();
+//            }
+//        } catch(IOException ex){ 
+//            ex.printStackTrace(); 
+//        }
+//        
+//        return isSuccess;
+//    }
     
-    public boolean editBooking(BookingBean bb){
+//    public boolean editBooking(BookingBean bb){
+//        Connection cnnct = null;
+//        PreparedStatement pStmnt = null;
+//        ResultSet rs = null;
+//        ArrayList<BookingBean> bookings = new ArrayList();
+//        int rowsAffected = 0;
+//
+//        try{
+//            cnnct = getConnection();
+//            
+//            String preQueryStatement = "UPDATE booking SET member_id = ?, guestlist_id = ?, notification_id = ?, venue_id = ?, status = ?, create_time = ?, fee = ?, checkout_time = ?, checkin_time = ?, start_date = ?, start_hour = ?, total_hour = ? WHERE id = ?";
+//            pStmnt = cnnct.prepareStatement(preQueryStatement);
+////            pStmnt.setInt(1, bb.getMemberId());
+//            pStmnt.setInt(2, bb.getGuestListId());
+////            pStmnt.setInt(3, bb.getNotificationId());
+//            pStmnt.setInt(4, bb.getVenueId());
+//            pStmnt.setInt(5, bb.getStatus());
+////            pStmnt.setString(6, bb.getCreateTime());
+//            pStmnt.setDouble(7, bb.getFee());
+////            pStmnt.setString(8, bb.getCheckoutTime());
+////            pStmnt.setString(9, bb.getCheckinTime());
+//            pStmnt.setString(10, bb.getStartDate());
+//            pStmnt.setString(11, bb.getStartHour());
+//            pStmnt.setString(12, bb.getTotalHour());
+//            pStmnt.setInt(13, bb.getId());
+//            
+//
+//            rowsAffected = pStmnt.executeUpdate();
+//            
+//            pStmnt.close();
+//            cnnct.close();
+//        } catch (SQLException ex){
+//            while (ex != null) { ex.printStackTrace(); ex = ex.getNextException();}
+//        } catch (IOException ex) { ex.printStackTrace();}
+//        return (rowsAffected > 0);
+//    }
+    
+    public boolean checkIn(String checkoutTime, int id){
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
-        ResultSet rs = null;
-        ArrayList<BookingBean> bookings = new ArrayList();
         int rowsAffected = 0;
 
         try{
             cnnct = getConnection();
-            
-            String preQueryStatement = "UPDATE booking SET member_id = ?, guestlist_id = ?, notification_id = ?, venue_id = ?, status = ?, create_time = ?, fee = ?, checkout_time = ?, checkin_time = ?, start_date = ?, start_hour = ?, total_hour = ? WHERE id = ?";
+
+            String preQueryStatement = "UPDATE booking SET checkin_time = ? WHERE id = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setInt(1, bb.getMemberId());
-            pStmnt.setInt(2, bb.getGuestListId());
-            pStmnt.setInt(3, bb.getNotificationId());
-            pStmnt.setInt(4, bb.getVenueId());
-            pStmnt.setInt(5, bb.getStatus());
-            pStmnt.setString(6, bb.getCreateTime());
-            pStmnt.setDouble(7, bb.getFee());
-            pStmnt.setString(8, bb.getCheckoutTime());
-            pStmnt.setString(9, bb.getCheckinTime());
-            pStmnt.setString(10, bb.getStartDate());
-            pStmnt.setString(11, bb.getStartHour());
-            pStmnt.setString(12, bb.getTotalHour());
-            pStmnt.setInt(13, bb.getId());
-            
+            pStmnt.setString(1, checkoutTime);
+            pStmnt.setInt(2, id);
 
             rowsAffected = pStmnt.executeUpdate();
-            
+
             pStmnt.close();
             cnnct.close();
         } catch (SQLException ex){
@@ -160,21 +183,43 @@ public class BookingDB {
         return (rowsAffected > 0);
     }
     
-    public boolean delRecord(String id){
+    public boolean checkOut(String checkoutTime, int id){
+            Connection cnnct = null;
+            PreparedStatement pStmnt = null;
+            int rowsAffected = 0;
+    
+            try{
+                cnnct = getConnection();
+                
+                String preQueryStatement = "UPDATE booking SET checkout_time = ? WHERE id = ?";
+                pStmnt = cnnct.prepareStatement(preQueryStatement);
+                pStmnt.setString(1, checkoutTime);
+                pStmnt.setInt(2, id);
+                
+                rowsAffected = pStmnt.executeUpdate();
+                
+                pStmnt.close();
+                cnnct.close();
+            } catch (SQLException ex){
+                while (ex != null) { ex.printStackTrace(); ex = ex.getNextException();}
+            } catch (IOException ex) { ex.printStackTrace();}
+            return (rowsAffected > 0);
+    }
+    
+    public boolean approve(int id){
         Connection cnnct = null;
         PreparedStatement pStmnt = null;
-        ResultSet rs = null;
         int rowsAffected = 0;
 
         try{
             cnnct = getConnection();
-            
-            String preQueryStatement = "DELETE FROM booking WHERE custId = ?";
+
+            String preQueryStatement = "UPDATE booking SET status = 1 WHERE id = ?";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
-            pStmnt.setString(1, id);
-            
+            pStmnt.setInt(1, id);
+
             rowsAffected = pStmnt.executeUpdate();
-            
+
             pStmnt.close();
             cnnct.close();
         } catch (SQLException ex){
@@ -182,6 +227,30 @@ public class BookingDB {
         } catch (IOException ex) { ex.printStackTrace();}
         return (rowsAffected > 0);
     }
+    
+    
+//    public boolean delBooking(String id){
+//        Connection cnnct = null;
+//        PreparedStatement pStmnt = null;
+//        ResultSet rs = null;
+//        int rowsAffected = 0;
+//
+//        try{
+//            cnnct = getConnection();
+//            
+//            String preQueryStatement = "DELETE FROM booking WHERE custId = ?";
+//            pStmnt = cnnct.prepareStatement(preQueryStatement);
+//            pStmnt.setString(1, id);
+//            
+//            rowsAffected = pStmnt.executeUpdate();
+//            
+//            pStmnt.close();
+//            cnnct.close();
+//        } catch (SQLException ex){
+//            while (ex != null) { ex.printStackTrace(); ex = ex.getNextException();}
+//        } catch (IOException ex) { ex.printStackTrace();}
+//        return (rowsAffected > 0);
+//    }
     
     
 }

@@ -1,0 +1,11 @@
+ict\db\UserDB.class
+com\mycompany\jsp_assignment\JAXRSConfiguration.class
+ict\db\VenueDB.class
+ict\servlet\HandleUserController.class
+ict\db\BookingDB.class
+ict\bean\BookingBean.class
+ict\bean\UserBean.class
+com\mycompany\jsp_assignment\resources\JavaEE8Resource.class
+ict\servlet\HandleVenueController.class
+ict\servlet\HandleBookingController.class
+ict\bean\VenueBean.class

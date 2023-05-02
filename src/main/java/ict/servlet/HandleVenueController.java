@@ -5,7 +5,6 @@
  */
 package ict.servlet;
 
-import ict.bean.BookingBean;
 import ict.bean.VenueBean;
 import ict.db.VenueDB;
 import java.io.IOException;
@@ -22,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author roger
  */
-@WebServlet(name = "HandleVenueController", urlPatterns = {"/HandleVenueController"})
+@WebServlet(name = "HandleVenueController", urlPatterns = {"/HandleVenue"})
 public class HandleVenueController extends HttpServlet {
 
     private VenueDB db;
@@ -48,58 +47,53 @@ public class HandleVenueController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-        String action = request.getParameter("action");
-        
-        if ("list".equalsIgnoreCase(action)) {
-           // call the query db to get retrieve for all venues 
-            ArrayList<VenueBean> venues = db.queryVenue();
-	// set the result into the attribute	 
-            request.setAttribute("venues", venues);
-	// redirect the result to the listCustomers.jsp
-            RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/listCustomers.jsp");
-            rd.forward(request, response);
-            
-        } else if ("delete".equalsIgnoreCase(action)) {
-            String id = request.getParameter("id");
-            if (id != null) {
-                db.delRecord(id);
-                response.sendRedirect("handleCustomer?action=list");
-            }
-            
-        } else if ("getEditCustomer".equalsIgnoreCase(action)) { 
+            String action = request.getParameter("action");
 
-            String id = request.getParameter("id");
+            if ("list".equalsIgnoreCase(action)) {
+                // call the query db to get retrieve for all venues 
+                    ArrayList<VenueBean> venues = db.queryVenue();
+                // set the result into the attribute	 
+                    request.setAttribute("venues", venues);
+                // redirect the result to the listCustomers.jssp
+                    RequestDispatcher rd;
+                    rd = getServletContext().getRequestDispatcher("/listVenues.jsp");
+                    rd.forward(request, response);
 
-            if (id != null) {
-                // call  query db to get retrieve for a customer with the given id
-                BookingBean customer = db.queryCustByID(id);
-                // set the customer as attribute in request scope
-                request.setAttribute("c", customer);
+            } else if ("delete".equalsIgnoreCase(action)) {
+                int id = Integer.parseInt(request.getParameter("id"));
                 
-                RequestDispatcher rd;
-                rd = getServletContext().getRequestDispatcher("/editCustomer.jsp");
-                rd.forward(request, response);          
-            }
-            
-        } else if ("search".equalsIgnoreCase(action)) { 
+                db.delVenue(id);
+                response.sendRedirect("handleVenue?action=list");
 
-            // obtain the parameter name;
-            String name = request.getParameter("name");
+            } else if ("add".equalsIgnoreCase(action)) { 
+                int staffId = Integer.parseInt(request.getParameter("staffId"));
+                String name = request.getParameter("name");
+                String address = request.getParameter("address");
+                String desc = request.getParameter("desc");
+                String img = request.getParameter("img");
+                String type = request.getParameter("type");
+                int capacity = Integer.parseInt(request.getParameter("capacity"));
+                double fee = Double.parseDouble(request.getParameter("fee"));
+                String lastModifiedFee = request.getParameter("lastModifiedFee");
+                
+                db.addVenue(staffId, name, address, desc, img, type, capacity, fee, lastModifiedFee);
+                response.sendRedirect("handleVenue?action=list");
 
-            if (name != null) {
-                ArrayList<CustomerBean> customers;
+            } else if ("edit".equalsIgnoreCase(action)){
+                int id = Integer.parseInt(request.getParameter("id"));
+                int staffId = Integer.parseInt(request.getParameter("staffId"));
+                String name = request.getParameter("name");
+                String address = request.getParameter("address");
+                String desc = request.getParameter("desc");
+                String img = request.getParameter("img");
+                String type = request.getParameter("type");
+                int capacity = Integer.parseInt(request.getParameter("capacity"));
+                double fee = Double.parseDouble(request.getParameter("fee"));
+                String lastModifiedFee = request.getParameter("lastModifiedFee");
                 
-                // call  queryByName from db 
-                // to retrieve for customers with the given name
-                customers = db.queryCustByName(name);
-                
-                // set the result into the attribute in request
-                request.setAttribute("c", customers);
-                
-                // forward the result to the listCustoemrs.jsp
-                response.sendRedirect("handleCustomer?action=list");
+                db.editVenue(id, staffId, name, address, desc, img, type, capacity, fee, lastModifiedFee);
+                response.sendRedirect("handleVenue?action=list");
+
             }
         }
     }

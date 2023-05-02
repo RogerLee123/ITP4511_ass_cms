@@ -1,12 +1,13 @@
+package ict.servlet;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ict.servlet;
 
-import ict.bean.BookingBean;
-import ict.db.BookingDB;
+import ict.bean.UserBean;
+import ict.db.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -21,21 +22,20 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author roger
  */
-@WebServlet(name = "HandleBookingController", urlPatterns = {"/HandleBooking"})
-public class HandleBookingController extends HttpServlet {
-    
-    private BookingDB db;
+@WebServlet(urlPatterns = {"/handleUser"})
+public class HandleUserController extends HttpServlet {
+
+    private UserDB db;
 
     public void init() {
         String dbUser = this.getServletContext().getInitParameter("dbUser");
         String dbPassword = this.getServletContext().getInitParameter("dbPassword");
         String dbUrl = this.getServletContext().getInitParameter("dbUrl");
 
-        db = new BookingDB(dbUrl, dbUser, dbPassword);
+        db = new UserDB(dbUrl, dbUser, dbPassword);
     }  
     
-
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,36 +47,49 @@ public class HandleBookingController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         
         String action = request.getParameter("action");
         
         if ("list".equalsIgnoreCase(action)) {
            // call the query db to get retrieve for all booking 
-            ArrayList<BookingBean> bookings = db.queryBooking();
+            ArrayList<UserBean> users = db.queryUser();
             // set the result into the attribute	 
-            request.setAttribute("bookings", bookings);
+            request.setAttribute("users", users);
             // redirect the result to the listBookings.jsp
             RequestDispatcher rd;
-            rd = getServletContext().getRequestDispatcher("/listBookings.jsp");
+            rd = getServletContext().getRequestDispatcher("/listUsers.jsp");
             rd.forward(request, response);
             
-        } else if("checkout".equalsIgnoreCase(action)) {
-            String checkoutTime = request.getParameter("checkoutTime");
+        } else if ("delete".equalsIgnoreCase(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
-            db.checkOut(checkoutTime, id);
-            
-        } else if("checkout".equalsIgnoreCase(action)) {
-            String checkinTime = request.getParameter("checkoutTime");
+
+            db.delUser(id);
+            response.sendRedirect("handleVenue?action=list");
+
+        } else if ("add".equalsIgnoreCase(action)) { 
+            String fname = request.getParameter("fname");
+            String lname = request.getParameter("lname");
+            String email = request.getParameter("email");
+            int phone = Integer.parseInt(request.getParameter("phone"));
+            String pwd = request.getParameter("pwd");
+            int role = Integer.parseInt(request.getParameter("role"));
+
+            db.addUser(fname, lname, email, phone, pwd, role);
+            response.sendRedirect("handleUser?action=list");
+
+        } else if ("edit".equalsIgnoreCase(action)){
             int id = Integer.parseInt(request.getParameter("id"));
-            db.checkIn(checkinTime, id);
-        
-        } else if("approve".equalsIgnoreCase(action)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            db.approve(id);
-            
-        } else {
-            PrintWriter out = response.getWriter();
-            out.println("No such action!!!");
+            String fname = request.getParameter("fname");
+            String lname = request.getParameter("lname");
+            String email = request.getParameter("email");
+            int phone = Integer.parseInt(request.getParameter("phone"));
+            String pwd = request.getParameter("pwd");
+            int role = Integer.parseInt(request.getParameter("role"));
+
+            db.editUser(id, fname, lname, email, phone, pwd, role);
+            response.sendRedirect("handleUser?action=list");
+
         }
         
     }
