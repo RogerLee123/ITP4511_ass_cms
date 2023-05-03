@@ -39,6 +39,60 @@ public class UserDB {
         return DriverManager.getConnection(url, username, password);
     }
     
+    public boolean isValidUser(String email, String pwd){
+        boolean isValid = false;
+        Connection connection;
+        PreparedStatement pstate;
+        ResultSet rs;
+        
+        try{
+            connection = getConnection();
+            String preQueryStatement = "SELECT * FROM user WHERE email = ? AND pwd = ?";
+            pstate = connection.prepareStatement(preQueryStatement);
+            pstate.setString(1, email);
+            pstate.setString(2, pwd);
+            //System.out.println(pstate);
+            pstate.executeQuery();
+            rs = pstate.getResultSet();
+            
+            if(rs.next()){
+               isValid = true;
+            }
+        } catch (SQLException e) {
+            while (e != null) {
+                e.printStackTrace();
+                e = e.getNextException();
+            }
+        } catch (IOException e) {
+            System.out.print(e);
+        }
+        return isValid;
+    }
+    
+    public int queryUserRoleById(int id){
+        Connection connection;
+        PreparedStatement pstate;
+        ResultSet rs;
+        int role = 0;
+
+        try{
+            connection = getConnection();
+            String preQueryStatement = "SELECT role FROM user WHERE id = ?";
+            pstate = connection.prepareStatement(preQueryStatement);
+            pstate.setInt(1, id);
+            pstate.executeQuery();
+            
+            rs = pstate.getResultSet();
+            role = rs.getInt("role");
+                        
+            pstate.close();
+            connection.close();
+        } catch (SQLException ex){
+            while (ex != null) { ex.printStackTrace(); ex = ex.getNextException();}
+        } catch (IOException ex) { ex.printStackTrace();}
+        return role;
+    }
+    
     public ArrayList<UserBean> queryUser(){
         Connection cnnct = null;
         Statement stmnt = null;
@@ -74,6 +128,34 @@ public class UserDB {
             while (ex != null) { ex.printStackTrace(); ex = ex.getNextException();}
         } catch (IOException ex) { ex.printStackTrace();}
         return users;
+    }
+    
+    public String queryUserName(String email, String pwd){
+        Connection connection;
+        PreparedStatement pstate;
+        ResultSet rs;
+        String name="";
+
+
+        try{
+            connection = getConnection();
+            String preQueryStatement = "SELECT lname, fname FROM user WHERE email = ? AND pwd = ?";
+            pstate = connection.prepareStatement(preQueryStatement);
+            pstate.setString(1, email);
+            pstate.setString(2, pwd);
+            pstate.executeQuery();
+            
+            rs = pstate.getResultSet();
+            
+            name = rs.getString("fname") + rs.getString("lname");
+            
+            
+            pstate.close();
+            connection.close();
+        } catch (SQLException ex){
+            while (ex != null) { ex.printStackTrace(); ex = ex.getNextException();}
+        } catch (IOException ex) { ex.printStackTrace();}
+        return name;
     }
     
     public boolean addUser(String fname, String lname, String email, int phone, String pwd, int role){

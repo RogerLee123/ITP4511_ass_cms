@@ -60,18 +60,18 @@ public class BookingDB {
             while(rs.next()){
                 bb = new BookingBean();
                 bb.setId(rs.getInt("id"));
-                bb.setMemberId(rs.getInt("MemberId"));
-                bb.setGuestListId(rs.getInt("guestlist_id"));
-                bb.setNotificationId(rs.getInt("notification_id"));
-                bb.setVenueId(rs.getInt("venue_id"));
+                bb.setMemberId(rs.getInt("memberid"));
+                bb.setGuestListId(rs.getInt("guestlistid"));
+                bb.setNotificationId(rs.getInt("notificationid"));
+                bb.setVenueId(rs.getInt("venueid"));
                 bb.setStatus(rs.getInt("status"));
-                bb.setCreateTime(rs.getString("create_time"));
+                bb.setCreateTime(rs.getString("createtime"));
                 bb.setFee(rs.getDouble("fee"));
-                bb.setCheckoutTime(rs.getString("checkout_time"));
-                bb.setStartDate(rs.getString("checkin_time"));
-                bb.setStartHour(rs.getString("start_date"));
-                bb.setTotalHour(rs.getString("start_hour"));
-                bb.setTotalHour(rs.getString("total_hour"));
+                //bb.setCheckoutTime(rs.getString("checkouttime"));
+                //bb.setStartDate(rs.getString("checkintime"));
+                //bb.setStartHour(rs.getString("startdate"));
+                //bb.setTotalHour(rs.getString("starthour"));
+                //bb.setTotalHour(rs.getString("totalhour"));
                 bookings.add(bb);
             }
             stmnt.close();

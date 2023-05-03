@@ -63,10 +63,10 @@ public class HandleVenueController extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("id"));
                 
                 db.delVenue(id);
-                response.sendRedirect("handleVenue?action=list");
+                response.sendRedirect("HandleVenue?action=list");
 
             } else if ("add".equalsIgnoreCase(action)) { 
-                int staffId = Integer.parseInt(request.getParameter("staffId"));
+                int staffId = Integer.parseInt(request.getParameter("staffid"));
                 String name = request.getParameter("name");
                 String address = request.getParameter("address");
                 String desc = request.getParameter("desc");
@@ -74,10 +74,9 @@ public class HandleVenueController extends HttpServlet {
                 String type = request.getParameter("type");
                 int capacity = Integer.parseInt(request.getParameter("capacity"));
                 double fee = Double.parseDouble(request.getParameter("fee"));
-                String lastModifiedFee = request.getParameter("lastModifiedFee");
-                
-                db.addVenue(staffId, name, address, desc, img, type, capacity, fee, lastModifiedFee);
-                response.sendRedirect("handleVenue?action=list");
+
+                db.addVenue(staffId, name, address, desc, img, type, capacity, fee);
+                response.sendRedirect("HandleVenue?action=list");
 
             } else if ("edit".equalsIgnoreCase(action)){
                 int id = Integer.parseInt(request.getParameter("id"));

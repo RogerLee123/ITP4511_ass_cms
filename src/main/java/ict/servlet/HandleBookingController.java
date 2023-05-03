@@ -7,6 +7,8 @@ package ict.servlet;
 
 import ict.bean.BookingBean;
 import ict.db.BookingDB;
+import ict.db.UserDB;
+import ict.db.VenueDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class HandleBookingController extends HttpServlet {
         if ("list".equalsIgnoreCase(action)) {
            // call the query db to get retrieve for all booking 
             ArrayList<BookingBean> bookings = db.queryBooking();
+            
             // set the result into the attribute	 
             request.setAttribute("bookings", bookings);
             // redirect the result to the listBookings.jsp
