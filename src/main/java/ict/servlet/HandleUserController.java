@@ -65,7 +65,7 @@ public class HandleUserController extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
 
             db.delUser(id);
-            response.sendRedirect("handleVenue?action=list");
+            response.sendRedirect("handleUser?action=list");
 
         } else if ("add".equalsIgnoreCase(action)) { 
             String fname = request.getParameter("fname");

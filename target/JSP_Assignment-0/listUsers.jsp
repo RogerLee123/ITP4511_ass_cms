@@ -1,3 +1,10 @@
+<%-- 
+    Document   : listMember.jsp
+    Created on : 2023?5?3?, ??4:38:53
+    Author     : roger
+--%>
+
+<%@page import="ict.bean.UserBean"%>
 <%@page import="ict.bean.BookingBean"%>
 <%@page import="java.util.ArrayList"%>
 <!doctype html>
@@ -19,6 +26,7 @@
 	<script src="assets/js/pace.min.js"></script>
 	<!-- Bootstrap CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link href="assets/css/bootstrap-extended.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 	<link href="assets/css/app.css" rel="stylesheet">
@@ -47,18 +55,18 @@
 			</div>
 			<!--navigation-->
 			<ul class="metismenu" id="menu">
-                                <li>
-					<a href="HandleBooking?action=list">
-						<div class="parent-icon"><i class="bx bxs-book-alt"></i>
+<!--                                <li>
+					<a href="handleUser?action=report">
+						<div class="parent-icon"><i class=""></i>
 						</div>
-						<div class="menu-title">Booking Management</div>
+						<div class="menu-title">Report</div>
 					</a>
-				</li>
+				</li>-->
 				<li>
-					<a href="HandleVenue?action=list">
-						<div class="parent-icon"> <i class="bx bxs-building-house"></i>
+					<a href="handleUser?action=list">
+						<div class="parent-icon"> <i class=""></i>
 						</div>
-						<div class="menu-title">Venue Management</div>
+						<div class="menu-title">User Management</div>
 					</a>
 				</li>
 			</ul>
@@ -77,9 +85,9 @@
 					</div>
 					<div class="user-box dropdown">
 						<a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+							<img src="assets/images/avatars/avatar-3.png" class="user-img" alt="user avatar">
 							<div class="user-info ps-3">
-								<p class="user-name mb-0"> <%= session.getAttribute("userName") %> Pauline Seitz</p>
+								<p class="user-name mb-0"> <%= session.getAttribute("userName") %> Amy Wong</p>
 							</div>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
@@ -96,13 +104,13 @@
 			<div class="page-content">
 				<!--breadcrumb-->
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-					<div class="breadcrumb-title pe-3">Booking Management</div>
+					<div class="breadcrumb-title pe-3">User Management</div>
 					<div class="ps-3">
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
 								<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 								</li>
-								<li class="breadcrumb-item active" aria-current="page">Booking Management</li>
+								<li class="breadcrumb-item active" aria-current="page">User Management</li>
 							</ol>
 						</nav>
 					</div>
@@ -112,48 +120,43 @@
 <!--				<hr/>-->
 				<div class="card">
                                     <div class="card-body">
+                                       <button type="button" class="btn btn-primary px-5" data-toggle='modal' data-target='#addUser'>Add User</button>
+                                        <p></p>
                                        <table class="table">
                                                 <thead>
                                                   <tr>
                                                     <th>#</th>
-                                                    <th>Member ID</th>
-                                                    <th>Venue</th>
-                                                    <th>Booking Status</th>
-                                                    <th>Create Time</th>
-                                                    <th>Fee</th>
-                                                    <th>Approve Booking</th>
-                                                    <th>Check In</th>
-                                                    <th>Check Out</th>
+                                                    <th>First Name</th>
+                                                    <th>Last Name</th>
+                                                    <th>Phone</th>
+                                                    <th>Role</th>
+                                                    <th>Edit</th>
+                                                    <th>Delete</th>
                                                   </tr>
                                                 </thead>
                                                 <tbody>
                                                     <%
-                                                        ArrayList<BookingBean> bookings = (ArrayList<BookingBean>)request.getAttribute("bookings");
-                                                        System.out.println(bookings);
+                                                        ArrayList<UserBean> users = (ArrayList<UserBean>)request.getAttribute("users");
+                                                        //System.out.println(users);
                                                         
                                                        String status = "";
                                                        String venue = "";
 
                                                         // loop through the customer array to display each customer record
-                                                        for (int i = 0; i < bookings.size(); i++) {
-                                                           BookingBean c = bookings.get(i);
-                                                           status = (c.getStatus() == 0) ? "Pending" : (c.getStatus() == 1) ? "Approve" : "Declined";
-                                                           venue = (c.getVenueId() == 1) ? "Tuen Mun" : (c.getVenueId() == 2) ? "Sha Tin" : (c.getVenueId() == 3) ? "Tsing Yi": (c.getVenueId() == 4) ? "Lee Wai Lee" : "Chai Wan";
+                                                        for (int i = 0; i < users.size(); i++) {
+                                                           UserBean c = users.get(i);
+                                                           String role = (c.getRole() == 0) ? "Member" : (c.getRole() == 1) ? "Staff" : "Senior Management";
                                                            
+                                                                                                                     
                                                            out.println("<tr>");
 
                                                            out.println("<td>" + c.getId() + "</td>");
-                                                           out.println("<td>" + c.getMemberId() + "</td>");
-                                                           out.println("<td>" + venue + "</td>");
-                                                           out.println("<td>" + status + "</td>");
-                                                           out.println("<td>" + c.getCreateTime() + "</td>");
-                                                           out.println("<td>" + c.getFee() + "</td>");
-                                                           out.println("<td><button type='button' class='btn btn-light'><i class='bx bxs-badge-check'></i></button></td>");
-                                                           out.println("<td><button type='button' class='btn btn-light'><i class='bx bx-log-in'></i></button></td>");
-                                                           out.println("<td><button type='button' class='btn btn-light' data-toggle='modal' data-target='#checkout'><i class='bx bx-log-out'></i></button></td>");
-                                                           //out.println("<td>" + c.getAge() + "</td>");
-                                                           //out.println("<td><a href=\"handleCustomer?action=delete&id=" + c.getCustId() + "\">delete</a></td>");
-                                                           //out.println("<td><a href=\"handleCustomer?action=getEditCustomer&id=" + c.getCustId() + "\">edit</a></td>");
+                                                           out.println("<td>" + c.getFname() + "</td>");
+                                                           out.println("<td>" + c.getLname() + "</td>");
+                                                           out.println("<td>" + c.getPhone() + "</td>");
+                                                           out.println("<td>" + role + "</td>");
+                                                           out.println("<td><button type='button' class='btn btn-light' data-toggle='modal' data-target='#'><i class='bx bxs-edit-alt'></i></button></td>");
+                                                           out.println("<td><button type='button' class='btn btn-light'><a href='handleUser?action=delete&id=" + c.getId() +"'><i class='bx bx-trash-alt'></i></button></td>");
 
                                                            out.println("</tr>");
 
@@ -163,23 +166,31 @@
                                                 </tbody>
                                         </table>
                                     
-
                                 
-                                <!-- Modal for checkout-->
-<!--                                <div class="modal fade" id="checkout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                               <!-- Modal -->
+                                <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                       <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Checkout</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
                                       </div>
                                       <div class="modal-body">
-                                          <form action="HandleBooking?action=checkout" method="post">
+                                          <form action="handleUser?action=add" method="post">
                                                 
-                                              Staff Comment <textarea class="form-control" id="w3review" name="w3review" rows="4" cols="50">
-                                          
+                                                First Name <input type="text" class="form-control" name="fname"><br>
+                                                Last Name <input type="text" class="form-control" name="lname"><br>
+                                                Phone <input type="text" class="form-control" name="phone"><br>
+                                                Email <input type="email" class="form-control" name="email"><br>
+                                                Password <input type="password" class="form-control" name="pwd"><br>
+                                                Role <select name="role" class="form-select">
+                                                        <option selected>Please choose a role</option>
+                                                        <option value="0">Member</option>
+                                                        <option value="1">Staff</option>
+                                                        <option value="2">Senior Management</option>
+                                                     </select><br>
                                               
                                           
                                       </div>
@@ -190,7 +201,7 @@
                                       </div>
                                     </div>
                                   </div>
-                                </div>-->
+                                </div>
                                                 
 			</div>
 		</div>
@@ -215,6 +226,9 @@
 	
 	<!-- Bootstrap JS -->
 	<script src="assets/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<!--plugins-->
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/plugins/simplebar/js/simplebar.min.js"></script>

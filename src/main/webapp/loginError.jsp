@@ -43,7 +43,7 @@
 										<form class="row g-4" method="post" action="login">
                                                                                         <input type="hidden" name="action" value="authenticate"/>
                                                                                         <div class="alert alert-danger" role="alert">
-                                                                                            Invalid username or password. Please login again.
+                                                                                            Invalid email address or password. Please login again.
                                                                                         </div>
 											<div class="col-12">
 												<label for="inputEmailAddress" class="form-label">Email Address</label>

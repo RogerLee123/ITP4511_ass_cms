@@ -165,7 +165,7 @@ public class UserDB {
         boolean isSuccess = false;
         try{
             cnnct = getConnection();
-            String preQueryStatement = "INSERT INTO user VALUES (default, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String preQueryStatement = "INSERT INTO user VALUES (default, ?, ?, ?, ?, ?, ?)";
             pStmnt = cnnct.prepareStatement(preQueryStatement);
             pStmnt.setString(1, fname);
             pStmnt.setString(2, lname);
@@ -173,6 +173,7 @@ public class UserDB {
             pStmnt.setInt(4, phone);
             pStmnt.setString(5, pwd);
             pStmnt.setInt(6, role);
+            System.out.println(pStmnt);
             int rowCount = pStmnt.executeUpdate();
             if(rowCount >= 1){
                 isSuccess = true;

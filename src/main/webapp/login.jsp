@@ -30,7 +30,7 @@
 			<div class="container-fluid">
 				<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
 					<div class="col mx-auto">
-					
+                                            <center><p><img src="assets/images/banner.png" width="70%" height="70%"></p></center>
 						<div class="card shadow-none">
 							<div class="card-body">
 								<div class="border p-4 rounded">

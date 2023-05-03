@@ -140,7 +140,7 @@
                                                         // loop through the customer array to display each customer record
                                                         for (int i = 0; i < venues.size(); i++) {
                                                            VenueBean c = venues.get(i);
-                                                           out.println("<tr>");
+                                                           out.println("<tr data-toggle='modal' data-target='#addVenue'>");
 
                                                            out.println("<td>" + c.getId() + "</td>");
                                                            out.println("<td>" + c.getStaffId() + "</td>");
@@ -177,13 +177,13 @@
                                       <div class="modal-body">
                                           <form action="HandleVenue?action=add" method="post">
                                                 
-                                                Staff ID <input type="text" class="form-control" name="staffid"><br>
-                                                Name <input type="text" class="form-control" name="name"><br>
-                                                Address <input type="text" class="form-control" name="address"><br>
-                                                Description <input type="text" class="form-control" name="desc"><br>
-                                                Type <input type="text" class="form-control" name="type"><br>
-                                                Capacity <input type="text" class="form-control" name="capacity"><br>
-                                                Fee <input type="number" class="form-control" name="fee"><br>
+                                                Staff ID <input type="text" class="form-control" name="staffid" id="staffid"><br>
+                                                Name <input type="text" class="form-control" name="name" id="name"><br>
+                                                Address <input type="text" class="form-control" name="address" id="address"><br>
+                                                Description <input type="text" class="form-control" name="desc" id="desc"><br>
+                                                Type <input type="text" class="form-control" name="type" id="type"><br>
+                                                Capacity <input type="text" class="form-control" name="capacity" id="capacity"><br>
+                                                Fee <input type="number" class="form-control" name="fee" id="fee"><br>
                                           
                                               
                                           
@@ -225,6 +225,8 @@
 		$(document).ready(function() {
 			$('#example').DataTable();
 		  } );
+                  
+                
 	</script>
 	
 	<!--app JS-->

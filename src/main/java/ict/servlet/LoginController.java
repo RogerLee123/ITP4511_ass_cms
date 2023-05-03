@@ -70,7 +70,7 @@ public class LoginController extends HttpServlet {
             session.setAttribute("userInfo", bean);
             session.setAttribute("userName", username);
             
-            targetURL = "HandleBooking?action=list";
+            targetURL = "handleUser?action=list";
         } else {
             targetURL = "loginError.jsp";
         }
